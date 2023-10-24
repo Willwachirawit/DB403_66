@@ -19,9 +19,9 @@
     <!-- add table rows hear ex. 
     -->    
             <?php
-                $sql = 'SELECT ProductName, UnitsInStock
+                $sql = "SELECT ProductName, UnitsInStock
                 FROM products
-                WHERE CategoryID = 1 ORDER BY ProductID LIMIT 12';
+                WHERE CategoryID = {$_GET['category']}";
                 $result = $conn->query($sql);
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
