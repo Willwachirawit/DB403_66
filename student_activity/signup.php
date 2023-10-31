@@ -9,8 +9,21 @@
       student(studentID, studentName, majorID, password)
         values('{$studentID}', '{$studentName}',
                '{$majorID}', '{$password}')";
-               echo $sql;
-        $conn->query($sql);
+               try{
+               $conn->query($sql);
+               $_SESSION['user'] = [
+                'studentID' => $studentID,
+                'studentName' => $studentName
+               ];
+               header('location:index.php');
+               exit;
+               }
+               catch(mysqli_sql_exception){
+               $err = "StudentID $studentID alerady exists.";
+               }
+               catch(Exception $e){
+               $err = $e;
+               }
     }
 ?>
 <!doctype html>
@@ -53,7 +66,11 @@
       <form action = "signup.php" method="post" onsubmit="validate()">
         <img class="mb-4" src="images/apple.png" alt="" height="57">
         <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
-    
+    <?php
+    if(isset($err)) {
+      echo "<div class = 'alert alert-danger'>$err</div>";
+    }
+    ?>
         <div class="form-floating mb-2">
           <input required name ="studentID" type="text" class="form-control" id="student_id" placeholder="">
           <label for="student-id">Student ID</label>
